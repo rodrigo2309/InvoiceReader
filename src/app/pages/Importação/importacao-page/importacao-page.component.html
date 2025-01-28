@@ -1,0 +1,19 @@
+<div>
+  <form action="">
+    <label>Arquivo fatura:</label>
+    <input type="file" [(ngModel)]="nome" name="first">
+    <p><button (click)="read()">Enviar</button></p>
+    <p>Nome digitado: {{ nome }}</p>
+    <!-- <div *ngIf="transacao">
+      <p>Data: {{ transacao.data }}</p>
+      <p>Title: {{ transacao.title }}</p>
+      <p>Valor: {{ transacao.valor }}</p>
+    </div> -->
+    @if(transacao){
+    <p>Data: {{ transacao.data }}</p>
+    <p>Title: {{ transacao.title }}</p>
+    <p>Valor: {{ transacao.valor }}</p>
+    }
+    <!-- <input type="text" [id]="teste" value={{teste}}> -->
+  </form>
+</div>
