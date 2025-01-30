@@ -14,50 +14,30 @@ import { CommonModule } from '@angular/common';
 })
 export class ImportacaoPageComponent {
   public nome: any;
+  public casa: string = 'spider';
   url = 'http://localhost:5242';
   public teste = {
     file64: 'teste',
   };
-  public transacao!: Transaction;
+  public transacoes!: Transaction[];
 
   constructor(private http: HttpClient) {}
 
-  enviaFaturaBase64(): Observable<Transaction> {
-    let a = this.http.post<Transaction>(`${this.url}/v1/Read`, this.teste);
+  enviaFaturaBase64(): Observable<Transaction[]> {
+    let a = this.http.post<Transaction[]>(`${this.url}/v1/Read`, this.teste);
     console.log(a);
     return a;
   }
 
-  // read() {
-  //   this.enviaFaturaBase64().subscribe((data) => {
-  //     console.log(data);
-  //     this.transacao = data;
-  //     console.log(this.transacao);
-  //   });
-  // }
-
   read() {
     this.enviaFaturaBase64().subscribe({
       next: (data) => (
-        (this.transacao = data),
-        console.log(this.transacao.data),
-        console.log(data.data)
+        (this.transacoes = data),
+        console.log(this.transacoes),
+        console.log(data)
       ),
       error: (err) => console.error('Erro ao buscar usuário', err),
       complete: () => console.log('Requsicao Finalizada'),
     });
   }
-
-  //   submit() {
-  //     this.enviaFaturaBase64(this.teste).subscribe(
-  //       (data: any) => {
-  //         console.log(data);
-  //         this.transacao = data;
-  //         return data;
-  //       },
-  //       (err) => {
-  //         console.log(err);
-  //       }
-  //     );
-  //   }
 }

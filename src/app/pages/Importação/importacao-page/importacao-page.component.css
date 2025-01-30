@@ -1,6 +1,32 @@
-div{
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial,sans-serif;
+} */
+
+section {
   display: flex;
   align-items: flex-end;
   justify-content: center;
   margin-top: 150px;
+}
+
+div{
+  padding: 40px 0;
+}
+
+.grid-container{
+  display: grid;
+  max-width: 400px;
+	margin: 0 auto;
+	border: 1px solid #ccc;
+  grid-template-columns: 200px 200px;
+}
+
+.grid-item {
+  margin: 5px;
+	background: tomato;
+	text-align: center;
+	font-size: 1.5em;
 }
