@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Transaction } from '../../../models/transaction.model';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { DataService } from '../../../service/data.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-importacao-page',
@@ -14,30 +14,41 @@ import { CommonModule } from '@angular/common';
 })
 export class ImportacaoPageComponent {
   public nome: any;
-  public casa: string = 'spider';
   url = 'http://localhost:5242';
-  public teste = {
-    file64: 'teste',
-  };
-  public transacoes!: Transaction[];
+  public transacoes$!: Observable<Transaction[]>;
+  base64: string | null = null;
 
-  constructor(private http: HttpClient) {}
-
-  enviaFaturaBase64(): Observable<Transaction[]> {
-    let a = this.http.post<Transaction[]>(`${this.url}/v1/Read`, this.teste);
-    console.log(a);
-    return a;
-  }
+  constructor(private data: DataService) {}
 
   read() {
-    this.enviaFaturaBase64().subscribe({
-      next: (data) => (
-        (this.transacoes = data),
-        console.log(this.transacoes),
-        console.log(data)
-      ),
-      error: (err) => console.error('Erro ao buscar usuário', err),
-      complete: () => console.log('Requsicao Finalizada'),
-    });
+    this.transacoes$ = this.data.getAccountsByBase64(this.base64!);
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.base64 = e.target.result.split(',')[1]; // Pega apenas a parte Base64
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  retornaLista() {
+    var lista: Transaction[] = [
+      { data: '01/01/2025', title: 'mundial', valor: '10.00' },
+      { data: '20/01/2025', title: 'farmacia', valor: '50.00' },
+      { data: '30/01/2025', title: 'guanabara', valor: '100.00' },
+      { data: '30/01/2025', title: 'casaDocaraio', valor: '58.00' },
+      { data: '30/01/2025', title: 'chamabari', valor: '5646.00' },
+      { data: '30/01/2025', title: 'shopping', valor: '45.00' },
+      { data: '30/01/2025', title: 'salao', valor: '483.00' },
+      { data: '30/01/2025', title: 'joguinho', valor: '566.00' },
+      { data: '30/01/2025', title: 'computador', valor: '5400.00' },
+      { data: '30/01/2025', title: 'rtx', valor: '1000.00' },
+    ];
+
+    return lista;
   }
 }

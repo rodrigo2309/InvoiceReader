@@ -1,0 +1,14 @@
+section{
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-top: 150px;
+}
+
+div{
+  padding: 20px 0px;
+}
+
+.teste{
+  display: flex;
+}

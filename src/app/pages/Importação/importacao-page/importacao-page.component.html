@@ -1,15 +1,20 @@
 <section>
   <form action="">
     <label>Arquivo fatura:</label>
-    <input type="file" [(ngModel)]="nome" name="first">
+    <input type="file" (change)="onFileSelected($event)" name="first" accept=".csv">
+    <p *ngIf="base64">Base64:</p>
+    <textarea *ngIf="base64" [value]="base64" rows="6" cols="50"></textarea>
     <p><button (click)="read()">Enviar</button></p>
-    <input type="text" value={{casa}}>
-    <input type="text" [(ngModel)]="nome" placeholder="Digitai bro" name="first">
-    <p>Nome digitado: {{ nome }}</p>
-    @if (transacoes) {
+
+    @if (transacoes$) {
     <div class="grid-container">
-      @for (item of transacoes; track $index) {
-      <div class="grid-item">Data: {{ item.data }} Title: {{ item.title }} Valor: {{ item.valor }}</div>
+      <div class="grid-item">Data</div>
+      <div class="grid-item">Title</div>
+      <div class="grid-item">Valor</div>
+      @for (item of transacoes$ | async; track $index) {
+      <div class="grid-item">{{ item.data }} </div>
+      <div class="grid-item">{{ item.title }}</div>
+      <div class="grid-item">{{ item.valor }}</div>
       }
     </div>
     }

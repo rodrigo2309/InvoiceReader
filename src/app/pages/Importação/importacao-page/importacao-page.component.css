@@ -13,15 +13,15 @@ section {
 }
 
 div{
-  padding: 40px 0;
+  padding: 20px 0;
 }
 
 .grid-container{
   display: grid;
-  max-width: 400px;
+  max-width: 600px;
 	margin: 0 auto;
 	border: 1px solid #ccc;
-  grid-template-columns: 200px 200px;
+  grid-template-columns: 200px 200px 200px;
 }
 
 .grid-item {
