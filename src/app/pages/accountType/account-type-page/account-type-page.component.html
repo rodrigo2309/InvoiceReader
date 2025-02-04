@@ -11,7 +11,11 @@
       <input type="checkbox" formControlName="contem">
       <label>Contém</label>
     </div>
-    <button (click)="teste()">botone</button>
+
+    <!-- <button (click)="teste()">teste</button> -->
+    <button (click)="saveAccount(form.controls['name'].value,form.controls['conta'].value,form.controls['contem'].value,'rodrigo')">insert</button>
+
+    <button (click)="deleteUser()">delete</button>
 
     @if(form){
     <ul>
