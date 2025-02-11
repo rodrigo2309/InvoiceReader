@@ -1,51 +1,70 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DataFirebaseService } from '../../../service/data.firebase.service';
+import { DataService } from '../../../service/data.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-account-type-page',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './account-type-page.component.html',
   styleUrl: './account-type-page.component.css',
 })
 export class AccountTypePageComponent {
   public form: FormGroup;
+  public busy = false;
 
-  private firebaseService = inject(DataFirebaseService);
-  data: any = {};
-
-  constructor(private fb: FormBuilder) {
-    this.form = this.fb.group({ name: [], conta: [], contem: [] });
-  }
-
-  ngOnInit() {
-    // 🔥 Escuta mudanças em tempo real
-    this.firebaseService.listenData('users', (data) => {
-      this.data = data;
-      console.log('Dados atualizados:', this.data);
+  constructor(
+    private fb: FormBuilder,
+    private service: DataService,
+    private toastr: ToastrService,
+    private router: Router
+  ) {
+    this.form = this.fb.group({
+      nome: [],
+      conta: [],
+      contem: [],
+      usuario: [],
     });
   }
 
-  deleteUser() {
-    this.firebaseService
-      .deleteData('users/user1')
-      .then(() => console.log('Usuário removido!'))
-      .catch((error) => console.error('Erro ao remover:', error));
+  ngOnInit() {}
+
+  create() {
+    this.busy = true;
+    this.form.get('usuario')?.setValue('rodrigo');
+    this.service.createAccountType(this.form.value).subscribe(
+      (data: any) => {
+        this.busy = false;
+        this.toastr.success(data.message, 'Cadastrado com Sucesso!');
+        this.form.reset();
+      },
+      (err) => {
+        this.toastr.error(err.message, 'Cadastro inválido');
+        this.busy = false;
+      }
+    );
   }
 
-  // 🔥 Salvar dados no Firebase
-  saveAccount(name: string, conta: string, contem: boolean, usuario: string) {
-    this.firebaseService.saveData(`AccountTypes/${usuario}`, {
-      name: name,
-      conta: conta,
-      contem: contem,
-      usuario: 'rodrigo',
-    });
-  }
+  delete() {
+    this.busy = true;
 
-  // 🔥 Adicionar item a uma lista
-  addAccount() {
-    this.firebaseService.addToList('users', { name: 'Maria', age: 30 });
+    let deletar = {
+      nome: this.form.get('nome')?.value,
+    };
+
+    this.service.deleteAccountType(deletar).subscribe(
+      (data: any) => {
+        this.busy = false;
+        this.toastr.success(data.message, 'Deletado!!');
+        this.form.reset();
+      },
+      (err) => {
+        console.log(err);
+        this.toastr.error(err.message, 'Erro ao deletar!!');
+        this.busy = false;
+      }
+    );
   }
 }

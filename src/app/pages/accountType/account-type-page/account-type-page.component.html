@@ -3,26 +3,19 @@
     <h3>Cadastro Tipo de Contas</h3>
     <div>
       <label>Nome: </label>
-      <input type="text" formControlName="name">
+      <input type="text" formControlName="nome">
     </div>
     <div>
       <label>Conta: </label>
       <input type="text" formControlName="conta">
-      <input type="checkbox" formControlName="contem">
-      <label>Contém</label>
+      <div>
+        <input type="checkbox" formControlName="contem">
+        <label>Contém</label>
+      </div>
     </div>
 
-    <!-- <button (click)="teste()">teste</button> -->
-    <button (click)="saveAccount(form.controls['name'].value,form.controls['conta'].value,form.controls['contem'].value,'rodrigo')">insert</button>
-
-    <button (click)="deleteUser()">delete</button>
-
-    @if(form){
-    <ul>
-      <li>{{form.value.name}}</li>
-      <li>{{form.value.conta}}</li>
-      <li>{{form.value.contem}}</li>
-    </ul>
-    }
+    <button (click)="create()">CADASTRAR</button>
+    <br><br>
+    <button (click)="delete()">DELETE</button>
   </form>
 </section>

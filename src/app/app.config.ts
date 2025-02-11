@@ -9,6 +9,9 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { firebaseConfig } from '../firebase-config'; // Importa a configuração
 
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -17,5 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(firebaseConfig)), // Inicializa o Firebase
     provideDatabase(() => getDatabase()), // Ativa o Realtime Database
+    provideAnimations(), // required animations providers
+    provideToastr(), // Toastr providers
   ],
 };
