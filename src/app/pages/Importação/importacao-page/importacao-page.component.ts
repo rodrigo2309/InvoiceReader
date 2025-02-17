@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Transaction } from '../../../models/transaction.model';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../../service/data.service';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-importacao-page',
@@ -15,13 +15,33 @@ import { Observable } from 'rxjs';
 export class ImportacaoPageComponent {
   public nome: any;
   url = 'http://localhost:5242';
-  public transacoes$!: Observable<Transaction[]>;
+  public transacoes$!: Transaction[];
   base64: string | null = null;
 
   constructor(private data: DataService) {}
 
   read() {
-    this.transacoes$ = this.data.getAccountsByBase64(this.base64!);
+    let objs = this.data.getAccountsByBase64(this.base64!);
+    this.transacoes$ = this.tratarRetorno(objs);
+  }
+
+  tratarRetorno(listaTransacao: Observable<Transaction[]>): Transaction[] {
+    let listaTipoConta = this.data.getByUserAccountType('rodrigo');
+    let newLista: Transaction[] = [];
+
+    combineLatest([listaTransacao, listaTipoConta]).subscribe(
+      ([transacoes, tipoContas]) => {
+        transacoes.forEach((x) => {
+          let conta = tipoContas.find((b) => b.nome == x.title)?.conta;
+          if (conta != undefined) {
+            x.title = conta;
+          }
+          newLista.push(x);
+        });
+      }
+    );
+
+    return newLista;
   }
 
   onFileSelected(event: any) {

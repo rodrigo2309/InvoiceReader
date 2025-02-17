@@ -11,7 +11,7 @@
       <div class="grid-item">Data</div>
       <div class="grid-item">Title</div>
       <div class="grid-item">Valor</div>
-      @for (item of transacoes$ | async; track $index) {
+      @for (item of transacoes$; track $index) {
       <div class="grid-item">{{ item.data }} </div>
       <div class="grid-item">{{ item.title }}</div>
       <div class="grid-item">{{ item.valor }}</div>

@@ -2,20 +2,54 @@
   <form [formGroup]="form">
     <h3>Cadastro Tipo de Contas</h3>
     <div>
+      <label>Id: </label>
+      <input type="text" formControlName="id">
+    </div>
+    <div>
       <label>Nome: </label>
       <input type="text" formControlName="nome">
     </div>
     <div>
       <label>Conta: </label>
       <input type="text" formControlName="conta">
-      <div>
-        <input type="checkbox" formControlName="contem">
-        <label>Contém</label>
-      </div>
+    </div>
+    <div>
+      <label>Usuario: </label>
+      <input type="text" formControlName="usuario">
+    </div>
+    <div>
+      <input type="checkbox" formControlName="contem">
+      <label>Contém</label>
+    </div>
+    <div>
+      <button (click)="create()">CADASTRAR</button>
+      <button (click)="delete()">DELETE</button>
+      <button (click)="getAll()">EXIBIR CADASTROS</button>
     </div>
 
-    <button (click)="create()">CADASTRAR</button>
-    <br><br>
-    <button (click)="delete()">DELETE</button>
+    @if (accountTypes$) {
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Conta</th>
+          <th>Contem</th>
+          <th>Usuario</th>
+        </tr>
+      </thead>
+      @for (item of accountTypes$ | async; track $index) {
+      <tbody>
+        <tr>
+          <td>{{item.id}}</td>
+          <td>{{item.nome}} </td>
+          <td>{{ item.conta }} </td>
+          <td>{{ item.contem }}</td>
+          <td>{{item.usuario}}</td>
+        </tr>
+      </tbody>
+      }
+    </table>
+    }
   </form>
 </section>
